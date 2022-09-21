@@ -1,15 +1,28 @@
-const express = require('express')
-const hbs = require('express-handlebars').create({
-    extname: 'hbs'
+const express = require("express");
+const hbs = require("express-handlebars").create({
+  extname: "hbs",
 });
 
-const app = express()
+const homeController = require("./controllers/homeController");
+const catalogController = require("./controllers/catalogController");
+const createController = require("./controllers/createController");
+const defaultController = require("./controllers/defaultController");
+const defaultTitle = require("./middlewares/deafultTitle");
 
-app.engine('.hbs', hbs.engine);
-app.set('view engine', '.hbs')
+const app = express();
 
-app.use(express.urlencoded({ extended:true }))
-app.use('/static', express.static('static'))
+app.engine(".hbs", hbs.engine);
+app.set("view engine", ".hbs");
 
+app.use(defaultTitle("SoftUni Accomodation"));
 
-app.listen(3000, () => console.log('Servier listening on port 3000....'))
+app.use(express.urlencoded({ extended: true }));
+app.use("/static", express.static("static"));
+
+app.use(homeController);
+app.use("/catalog", catalogController);
+app.use("/create", createController);
+
+app.all("*", defaultController);
+
+app.listen(3000, () => console.log("Servier listening on port 3000...."));
