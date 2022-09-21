@@ -1,15 +1,32 @@
+const { getAll, getById } = require("../services/accomodationService");
+
 const router = require("express").Router();
 
-router.get('/', (req,res) => {
-    res.render('catalog', {
-        title : "All accommodation"
-    })
+router.get("/", (req, res) => {
+  const rooms = getAll();
+
+  res.render("catalog", {
+    title: "All accommodation",
+    rooms,
+  });
 });
 
-router.get('/:id', (req, res) => {
-    res.render('details', {
-        title: "Accomodation Details"
-    })
-})
+router.get("/:id", (req, res) => {
+  const roomId = req.params.id;
+  const room = getById(roomId);
+  console.log(room)
+  if (room) {
+    res.render("details", {
+      title: "Accomodation Details",
+      room,
+    });
+  } else {
+    res.render("roomNotFound" , {
+        title: "Accomodation Details",
+        roomId
+    });
+  
+  }
+});
 
-module.exports = router
+module.exports = router;
