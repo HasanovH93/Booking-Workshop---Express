@@ -4,6 +4,7 @@
         "name": "Room",
         "city": "Sofia",
         "beds": 2,
-        "price": 130
+        "price": 130,
+        "description":"Family Room"
     }
 ]

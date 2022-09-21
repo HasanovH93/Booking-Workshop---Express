@@ -1,4 +1,3 @@
-const e = require("express");
 const fs = require("fs");
 const fileName = "./models/data.json";
 const data = JSON.parse(fs.readFileSync(fileName));
@@ -13,4 +12,17 @@ async function persist() {
       }
     });
   });
+}
+
+function getAll(){
+    return data;
+}
+
+function getById(id){
+   return data.find(i => i.id == id);
+}
+
+module.exports = {
+    getAll,
+    getById
 }
