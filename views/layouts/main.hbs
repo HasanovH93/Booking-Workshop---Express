@@ -3,26 +3,35 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>{{title}}</title>
+    <title>{{title}}</title>
     <link rel="stylesheet" href="/static/site.css">
 </head>
 
 <body>
     <div id="page-content">
         <header>
-            <nav>
+            <a href="/" class="title-logo">
+                <img src="/static/assets/logo.png">
+                <span>SoftUni Sleepover</span>
+            </a>
+            <nav class="main-nav nav-mid">
                 <ul>
-                    <li><a href="/">Catalog</a></li>
+                    <li>
+                        <a href="/catalog">Browse Accomodation</a>
+                    </li>
+                    <li>
+                        <a href="/create">Host</a>
+                    </li>
                 </ul>
             </nav>
         </header>
-            <main>
-                {{{body}}}
-            </main>
+
+        <main>
+            {{{body}}}
+        </main>
+
+        <footer>Viktor Kostadinov &copy; 2022</footer>
     </div>
-    <footer> HH &copy; 2022</footer>
 </body>
 
 </html>

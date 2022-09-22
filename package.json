@@ -1,26 +1,16 @@
 {
-  "name": "booking-workshop---express",
+  "name": "04.workshop1",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/HasanovH93/Booking-Workshop---Express.git"
-  },
-  "author": "HH",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/HasanovH93/Booking-Workshop---Express/issues"
-  },
-  "homepage": "https://github.com/HasanovH93/Booking-Workshop---Express#readme",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "express": "^4.18.1",
     "express-handlebars": "^6.0.6"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.20"
   }
 }
