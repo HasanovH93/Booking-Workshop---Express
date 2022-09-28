@@ -1,3 +1,6 @@
+const { createFacility, getAllFacilities } = require('../services/facilityService');
+const { getById } = require('../services/roomService');
+
 const facilityController = require('express').Router();
 
 facilityController.get('/create', async (req, res) => {
@@ -8,11 +11,29 @@ facilityController.get('/create', async (req, res) => {
 });
 
 facilityController.post('/create', async (req ,res) => {
-    console.log(req.body);
+    try {
+        await createFacility(req.body.label, req.body.iconUrl);
+        res.redirect('/catalog')
+        
+    } catch (error) {
+        // TODO render Errors
+        res.render('createFacility', {
+            title: "Create new facility"
+        })
+    }
+facilityController.get('/:roomId/decorateRoom', async (req,res) => {
+    const roomId = req.params.roomId;
+    const room = await getById(roomId);
+    const facilities = await getAllFacilities();
 
-    res.redirect('/facility/create')
-    //take data from body
-    //create model instance profit
+    res.render('decorate', {
+        title: 'Add Facility',
+        room,
+        facilities
+    });
+
+});
+
 })
 
 module.exports = facilityController;
