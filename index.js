@@ -1,23 +1,16 @@
-const express = require('express');
-const expressConfig = require('./config/express')
+const express = require("express");
+const dataBaseConfig = require('./config/database')
+const expressConfig = require("./config/express");
+const routesConfig = require("./config/routes");
+
+async function start() {
+  const app = express();
+
+  expressConfig(app);
+  routesConfig(app);
+  await dataBaseConfig(app)
+  app.listen(3000, () => console.log("Server listening on port 3000"));
+}
 
 
-const homeController = require('./controllers/homeController');
-const catalogController = require('./controllers/catalogController');
-const createController = require('./controllers/createController');
-const defaultController = require('./controllers/defaultController');
-
-
-const app = express();
-
-expressConfig(app)
-
-app.use(homeController);
-app.use('/catalog', catalogController);
-app.use('/create', createController);
-// TODO attach other controllers
-
-app.all('*', defaultController);
-
-
-app.listen(3000, () => console.log('Server listening on port 3000'));
+start()
