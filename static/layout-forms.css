@@ -8,7 +8,9 @@ main label input,
 main label select {
     width: 200px;
 }
-
+main label input[type="checkbox"] {
+    width: 32px;
+}
 .aligned {
     text-align: right;
     display: inline-block;

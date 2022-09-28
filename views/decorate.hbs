@@ -1,13 +1,12 @@
 <section id="decorate-section">
-    {{#with room}}
-    <h1 class="item">{{name}}</h1>
+    <h1 class="item">{{room.name}}</h1>
     <div class="item padded">
 
         <main class="layout right large">
 
             <div class="col">
 
-                <img src="{{imgUrl}}" class="img-large">
+                <img src="{{room.imgUrl}}" class="img-large">
 
             </div>
 
@@ -15,8 +14,18 @@
              
              <p>Facilities:</p>
 
+           
+               <form method="post" action="/facility/{{room._id}}/decorateRoom">
+                  <ul class="catalog">
+                  {{#each facilities}}
+                  <li><label><input type="checkbox" name="{{_id}}">{{label}} <img class="facility-icon"src="{{iconUrl}}" alt=""></label></li>
+                  {{/each}}
+                </ul>
+                <button class="action cta">Confirm Facilities</button>
+               </form>
+               
+
             </div>
         </main>
     </div>
-    {{/with}}
 </section>

@@ -8,7 +8,7 @@ module.exports = (app) => {
   app.use(homeController);
   app.use("/catalog", catalogController);
   app.use("/create", createController);
-  app.use('facility',facilityController)
+  app.use('/facility',facilityController);
   // TODO attach other controllers
 
   app.all("*", defaultController);
