@@ -18,7 +18,7 @@
                <form method="post" action="/facility/{{room._id}}/decorateRoom">
                   <ul class="catalog">
                   {{#each facilities}}
-                  <li><label><input type="checkbox" name="{{_id}}">{{label}} <img class="facility-icon"src="{{iconUrl}}" alt=""></label></li>
+                  <li><label><input type="checkbox" name="{{_id}}" {{#if checked}}checked{{/if}}>{{label}} <img class="facility-icon"src="{{iconUrl}}" alt=""></label></li>
                   {{/each}}
                 </ul>
                 <button class="action cta">Confirm Facilities</button>
