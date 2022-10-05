@@ -11,10 +11,22 @@ authController.get('/login', (req, res) => {
 authController.post('/login', async (req, res) => {
     const result = await login(req.body.username, req.body.password);
     const token = req.signJwt(result)
-    res.cookie('jwt', token)
+    res.cookie('jwt', token, {maxAge: 14400000})
     res.redirect('/')
 })
 
+authController.get('/register', (req, res) => {
+    res.render('register', {
+        title: "Register"
+    })
+})
 
+authController.post('/lregister', async (req, res) => {
+    // const result = await login(req.body.username, req.body.password);
+    // const token = req.signJwt(result)
+    // res.cookie('jwt', token, {maxAge: 14400000})
+    res.redirect('/')
+})
+    
 
 module.exports = authController;

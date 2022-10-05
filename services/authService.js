@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 
 
 async function login(username, password) {
-    console.log(username.toLowerCase())
  return new Promise((res, rej) => {
     if (username.toLowerCase() == "hasan" && password == "123456") {
       res({
