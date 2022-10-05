@@ -20,7 +20,7 @@ async function addFacilities(roomId, facilityIds) {
   const toRemove = room.facilities.filter((f) =>
     facilities.every((x) => x._id.toString() != f._id.toString())
   );
-  console.log('To remove', toRemove.map(x => x.label));
+//   console.log('To remove', toRemove.map(x => x.label));
   toRemove.forEach(f => {
     //Remove room from facility
     f.rooms.splice(f.rooms.findIndex(rId => rId.toString() == roomId), 1);
@@ -32,7 +32,7 @@ async function addFacilities(roomId, facilityIds) {
   const newlyAdded = facilities.filter((f) =>
     room.facilities.every((x) => x._id.toString() != f._id.toString())
   );
-  console.log('New', newlyAdded.map(x=> x.label));
+//   console.log('New', newlyAdded.map(x=> x.label));
 
   //add Room ref to newly added facilites
   newlyAdded.forEach((f) => {
