@@ -16,7 +16,6 @@ facilityController.post("/create", async (req, res) => {
     await createFacility(req.body.label, req.body.iconUrl);
     res.redirect("/catalog");
   } catch (error) {
-    // TODO render Errors
     res.render("createFacility", {
       title: "Create new facility",
     });
@@ -26,6 +25,11 @@ facilityController.post("/create", async (req, res) => {
 facilityController.get("/:roomId/decorateRoom", async (req, res) => {
   const roomId = req.params.roomId;
   const room = await getById(roomId);
+
+  if(!req.user || req.user._id != room.owner){
+    return res.redirect('/auth/login')
+  }
+
   const facilities = await getAllFacilities();
   facilities.forEach(f => {
     if((room.facilities || []).some(id => id.toString() == f._id.toString())){
@@ -43,7 +47,7 @@ facilityController.get("/:roomId/decorateRoom", async (req, res) => {
 facilityController.post("/:roomId/decorateRoom", async (req, res) => {
     await addFacilities(req.params.roomId, Object.keys(req.body));
     
-    res.redirect('/facility/' + req.params.roomId + '/decorateRoom');
+    res.redirect('/catalog/' + req.params.roomId);
 });
 
 module.exports = facilityController;
