@@ -25,7 +25,9 @@
                         <li> <label>{{label}}</label> <img class="facility-icon" src="{{iconUrl}}"></li>
                         {{/each}}
                     </ul>
+                    {{#if isOwner}}
                         <a class="action cta" href="/facility/{{_id}}/decorateRoom">Button</a>
+                        {{/if}}
                 </div>
 
             </div>
