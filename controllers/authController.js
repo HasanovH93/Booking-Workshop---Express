@@ -1,4 +1,4 @@
-const validator = require('validator')
+const { body, validationResult } = require("express-validator");
 const { login, register } = require("../services/authService");
 const authController = require("express").Router();
 
@@ -30,32 +30,55 @@ authController.get("/register", (req, res) => {
   });
 });
 
-authController.post("/register", async (req, res) => {
-  try {
-    if (validator.isEmpty(req.body.username.trim()) || validator.isEmpty(req.body.password.trim())) {
-      throw new Error("All fields are required!");
-    }
-    if (req.body.password.trim() != req.body.repass.trim()) {
-      throw new Error("Passwords don't match!");
-    }
-    const result = await register(
-      req.body.username.trim(),
-      req.body.password.trim()
-    );
-    attachToken(req, res, result);
-    res.redirect("/");
-  } catch (err) {
-    res.render("register", {
-      title: "Register",
-      error: err.message.split("\n"),
-    });
-  }
-});
+authController.post(
+  "/register",
+  body("username")
+    .trim()
+    .notEmpty()
+    .withMessage("Username is required!").bail()
+    .isAlphanumeric()
+    .withMessage("Accepts only latin letters and numbers"),
+  body("password")
+    .trim()
+    .notEmpty()
+    .withMessage("Password is required!").bail()
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters long"),
+  body("repass")
+    .trim()
+    .custom((value, { req }) => {
+      return value == req.body.password;
+    })
+    .withMessage("Passwords don't match"),
 
-authController.get('/logout', (req, res) => {
-  res.clearCookie('jwt');
-  res.redirect('/')
-})
+  async (req, res) => {
+    try {
+      const { errors } = validationResult(req);
+      console.log(errors);
+      if (errors.length > 0) {
+        throw errors;
+      }
+      const result = await register(req.body.username, req.body.password);
+      attachToken(req, res, result);
+      res.redirect("/");
+    } catch (error) {
+      const fields = Object.fromEntries(error.map(e => [e.param,e.param]));
+      res.render("register", {
+        title: "Register",
+        body: {
+         username: req.body.username
+        },
+        error,
+        fields
+      });
+    }
+  }
+);
+
+authController.get("/logout", (req, res) => {
+  res.clearCookie("jwt");
+  res.redirect("/");
+});
 
 function attachToken(req, res, data) {
   const token = req.signJwt(data);
