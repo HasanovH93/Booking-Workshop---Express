@@ -1,3 +1,4 @@
+const validator = require('validator')
 const { login, register } = require("../services/authService");
 const authController = require("express").Router();
 
@@ -31,7 +32,7 @@ authController.get("/register", (req, res) => {
 
 authController.post("/register", async (req, res) => {
   try {
-    if (req.body.username.trim() == "" || req.body.password.trim() == "") {
+    if (validator.isEmpty(req.body.username.trim()) || validator.isEmpty(req.body.password.trim())) {
       throw new Error("All fields are required!");
     }
     if (req.body.password.trim() != req.body.repass.trim()) {
