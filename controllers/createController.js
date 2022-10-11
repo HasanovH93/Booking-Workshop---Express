@@ -1,6 +1,7 @@
 const { create } = require('../services/roomService');
 
 const router = require('express').Router();
+const { hasRole } = require("../middlewares/guards");
 
 
 router.get('/', (req, res) => {
@@ -9,9 +10,9 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post('/', async (req, res) => {
+router.post('/', hasRole('user'), async  (req, res) => {
     try {
-        const result = await create(req.body,req.user._id);
+        const result = await create(req.body, req.user._id);
         res.redirect('/catalog/' + result._id);
     } catch(err) {
         res.render('create', {
@@ -20,5 +21,5 @@ router.post('/', async (req, res) => {
         });
     }
 });
- 
+
 module.exports = router;
