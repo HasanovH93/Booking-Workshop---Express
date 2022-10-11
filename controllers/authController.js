@@ -1,5 +1,6 @@
 const { body, validationResult } = require("express-validator");
 const { login, register } = require("../services/authService");
+const { parseError } = require("../utils/parser");
 const authController = require("express").Router();
 
 authController.get("/login", (req, res) => {
@@ -8,7 +9,9 @@ authController.get("/login", (req, res) => {
   });
 });
 
-authController.post("/login", async (req, res) => {
+authController.post("/login", 
+body(['username' , 'password']).trim(),
+async (req, res) => {
   try {
     const result = await login(
       req.body.username.trim(),
@@ -16,10 +19,13 @@ authController.post("/login", async (req, res) => {
     );
     attachToken(req, res, result);
     res.redirect("/");
-  } catch (err) {
+  } catch (error) {
     res.render("login", {
       title: "Login",
-      error: err.message.split("\n"),
+      body: {
+        username: req.body.username
+      },
+      error: parseError(error)
     });
   }
 });
@@ -34,27 +40,23 @@ authController.post(
   "/register",
   body("username")
     .trim()
-    .notEmpty()
-    .withMessage("Username is required!").bail()
-    .isAlphanumeric()
-    .withMessage("Accepts only latin letters and numbers"),
+    .notEmpty().withMessage("Username is required!").bail()
+    .isAlphanumeric().withMessage("Accepts only latin letters and numbers"),
   body("password")
     .trim()
-    .notEmpty()
-    .withMessage("Password is required!").bail()
-    .isLength({ min: 6 })
-    .withMessage("Password must be at least 6 characters long"),
+    .isLength({ min: 6 }).withMessage("Password must be at least 6 characters long"),
   body("repass")
     .trim()
-    .custom((value, { req }) => {
-      return value == req.body.password;
-    })
-    .withMessage("Passwords don't match"),
+    .custom(async (value, { req }) => {
+    if(value != req.body.password){
+      throw new Error('Passwords dont match')
+    }
+    }),
+
 
   async (req, res) => {
     try {
       const { errors } = validationResult(req);
-      console.log(errors);
       if (errors.length > 0) {
         throw errors;
       }
@@ -62,14 +64,12 @@ authController.post(
       attachToken(req, res, result);
       res.redirect("/");
     } catch (error) {
-      const fields = Object.fromEntries(error.map(e => [e.param,e.param]));
       res.render("register", {
         title: "Register",
         body: {
          username: req.body.username
         },
-        error,
-        fields
+        error: parseError(error)
       });
     }
   }

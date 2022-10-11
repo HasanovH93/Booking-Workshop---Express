@@ -3,9 +3,10 @@ const { getById, update, deleteById } = require("../services/roomService");
 const roomController = require("express").Router();
 
 roomController.get("/:id/edit", async (req, res) => {
+ 
   const roomId = req.params.id;
   const room = await getById(roomId);
-
+  console.log(req.user)
   if(!req.user || room.owner != req.user._id){
    return res.redirect('/auth/login')
   }

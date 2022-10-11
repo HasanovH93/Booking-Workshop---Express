@@ -4,6 +4,7 @@ const {body, validationResult }= require('express-validator')
 const { hasRole } = require("../middlewares/guards");
 const { createFacility, getAllFacilities, addFacilities } = require("../services/facilityService");
 const { getById } = require("../services/roomService");
+const { parseError } = require("../utils/parser");
 
 
 facilityController.get("/create", hasRole('admin'), (req, res) => {
@@ -32,6 +33,8 @@ async (req, res) => {
     console.log(error)
     res.render("createFacility", {
       title: "Create new facility",
+      error: parseError(error),
+      body: req.body
     });
   }
 });

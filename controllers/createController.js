@@ -2,6 +2,7 @@ const { create } = require('../services/roomService');
 
 const router = require('express').Router();
 const { hasRole } = require("../middlewares/guards");
+const { parseError } = require('../utils/parser');
 
 
 router.get('/', (req, res) => {
@@ -14,10 +15,11 @@ router.post('/', hasRole('user'), async  (req, res) => {
     try {
         const result = await create(req.body, req.user._id);
         res.redirect('/catalog/' + result._id);
-    } catch(err) {
+    } catch(error) {
         res.render('create', {
             title: 'Request Error',
-            error: err.message.split('\n')
+            body: req.body,
+            error:parseError(error)
         });
     }
 });

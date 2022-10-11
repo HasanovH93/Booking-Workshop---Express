@@ -7,7 +7,7 @@ const roomSchema = new Schema({
     description: { type: String, required: true },
     city: { type: String, required: true },
     beds: { type: Number, required: true, min: 1 },
-    price: { type: Number, required: true, min: 0.01 },
+    price: { type: Number, required: true, min:[0.01, 'Price must bea positive number '] },
     imgUrl: { type: String, validate:{
         validator: (value) => URL_REGEX.test(value),
         message: (props) => {

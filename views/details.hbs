@@ -34,7 +34,9 @@
 
             </div>
         </main>
-        <footer>Listed by {{price}}</footer>
+        {{#with user}}
+        <footer>Listed by {{username}}</footer>
+        {{/with}}
     </div>
     {{/with}}
 </section>
