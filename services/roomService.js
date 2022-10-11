@@ -9,7 +9,7 @@ function getById(id) {
     return Room.findById(id).populate('facilities', 'label iconUrl').lean();
 }
 
-async function create(roomData, ownerId) {
+async function create(roomData, ownerId,ownerName) {
     const room = {
         name: roomData.name,
         description: roomData.description,
@@ -17,7 +17,8 @@ async function create(roomData, ownerId) {
         beds: Number(roomData.beds),
         price: Number(roomData.price),
         imgUrl: roomData.imgUrl,
-        owner: ownerId
+        owner: ownerId,
+     
     };
 
     const missing = Object.entries(room).filter(([k, v]) => !v);

@@ -6,6 +6,7 @@ const { parseError } = require('../utils/parser');
 
 
 router.get('/', (req, res) => {
+    console.log(req.body)
     res.render('create', {
         title: 'Host New Accomodation'
     });

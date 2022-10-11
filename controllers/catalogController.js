@@ -30,8 +30,9 @@ router.get('/:id', async (req, res) => {
 
     const roomId = req.params.id;
     const room = await getById(roomId);
-    const ownerName = req.user.username
+    const ownerName = req.user;
     console.log(ownerName)
+   
     if(req.user && req.user._id == room.owner){
         room.isOwner = true;
     }
@@ -41,8 +42,7 @@ router.get('/:id', async (req, res) => {
             
             title: 'Accomodation Details',
             room,
-            body: req.user.username
-            
+            ownerName
         });
     } else {
         res.render('roomNotFound', {
